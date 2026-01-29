@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { Center } from '@mantine/core';
+
+import { Routes } from '@/modules/routing';
+
+import { ROUTES_CONFIG } from '../configs';
 
 const App: FC = () => {
-  return <Center className={'text-xl bg-red-400'}>123</Center>;
+  return <Routes config={ROUTES_CONFIG} />;
 };
 
 export default App;
