@@ -1,14 +1,19 @@
-import { FC, ReactNode, useRef, useState } from 'react';
+import { ComponentProps, FC, ReactNode, useRef, useState } from 'react';
 
-import { PDF_HEIGHT, PDF_MARGIN, PDF_WIDTH } from '@/modules/pdf/constants';
-
+import { PDF_HEIGHT, PDF_MARGIN, PDF_WIDTH } from '../constants';
 import { downloadPdf, elementToPdf } from '../utils';
+
+import { PdfViewerSection } from './pdf-viewer-section';
 
 interface PdfViewerProps {
   children: ReactNode;
 }
 
-export const PdfViewer: FC<PdfViewerProps> = props => {
+type PdfViewer = FC<PdfViewerProps> & {
+  Section: FC<ComponentProps<typeof PdfViewerSection>>;
+};
+
+const PdfViewer: PdfViewer = props => {
   const [scale] = useState<number>(1);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -22,8 +27,11 @@ export const PdfViewer: FC<PdfViewerProps> = props => {
         padding: PDF_MARGIN,
       }}
     >
-      <div ref={ref}>{props.children}</div>
+      <div ref={ref} className={'flex h-full'}>
+        {props.children}
+      </div>
       <button
+        className={'absolute top-0 left-0 bg-blue-300'}
         onClick={() => {
           if (ref.current) {
             const pdf = elementToPdf(ref.current);
@@ -36,3 +44,7 @@ export const PdfViewer: FC<PdfViewerProps> = props => {
     </div>
   );
 };
+
+PdfViewer.Section = PdfViewerSection;
+
+export { PdfViewer };
