@@ -5,7 +5,11 @@ import { Routes } from '@/modules/routing';
 import { ROUTES_CONFIG } from '../configs';
 
 const App: FC = () => {
-  return <Routes config={ROUTES_CONFIG} />;
+  return (
+    <div className={'p-2'}>
+      <Routes config={ROUTES_CONFIG} />
+    </div>
+  );
 };
 
 export default App;

@@ -9,6 +9,7 @@ export interface ResumeContext {
   addSection: () => void;
   removeSection: (id: Id) => void;
   updateSection: (id: Id, newSection: EditResumeSection) => void;
+  swapSections: (fromId: Id, toId: Id) => void;
 }
 
 export const ResumeContext = createContext<ResumeContext | null>(null);

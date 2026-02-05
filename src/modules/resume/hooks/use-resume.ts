@@ -17,7 +17,7 @@ export const useResume = (): ResumeContext => {
 
   const removeSection = useCallback(
     (id: Id) => {
-      setSections(sections.filter(section => section.id === id));
+      setSections(sections.filter(section => section.id !== id));
     },
     [sections],
   );
@@ -29,10 +29,35 @@ export const useResume = (): ResumeContext => {
         return;
       }
 
-      setSections([
-        ...sections.filter(section => section.id !== id),
-        { id, ...newSection },
-      ]);
+      setSections(
+        sections.map(section => {
+          if (section.id === id) return { id, ...newSection };
+          return section;
+        }),
+      );
+    },
+    [sections],
+  );
+
+  const swapSections = useCallback(
+    (fromId: Id, toId: Id) => {
+      const fromSectionIdx = sections.findIndex(
+        section => section.id === fromId,
+      );
+      const toSectionIdx = sections.findIndex(section => section.id === toId);
+      if (fromSectionIdx === -1 || toSectionIdx === -1) {
+        console.error(
+          `Секция с id ${fromSectionIdx} или ${toSectionIdx} не найдена`,
+        );
+        return;
+      }
+
+      const newSections = [...sections];
+      const tmp = newSections[fromSectionIdx];
+
+      newSections[fromSectionIdx] = newSections[toSectionIdx];
+      newSections[toSectionIdx] = tmp;
+      setSections(newSections);
     },
     [sections],
   );
@@ -42,5 +67,6 @@ export const useResume = (): ResumeContext => {
     addSection,
     removeSection,
     updateSection,
+    swapSections,
   };
 };
